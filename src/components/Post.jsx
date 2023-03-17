@@ -8,6 +8,7 @@ import styles from './Post.module.css';
 
 export function Post({ author, content, publishedAt }) {
   const [comments, setComments] = useState([]);
+  const [newCommentText, setNewCommentText] = useState('');
 
   const publishedDateFormatted = format(publishedAt, "d 'de' LLLL 'às' HH:mm'h'", {
     locale: ptBR,
@@ -21,11 +22,13 @@ export function Post({ author, content, publishedAt }) {
   function handleCreateNewComment(event) {
     event.preventDefault();
 
-    const newComment = event.target.comment.value;
+    setComments([...comments, newCommentText]);
 
-    setComments([...comments, newComment]);
+    setNewCommentText('');
+  }
 
-    event.target.comment.value = '';
+  function handleNewCommentChange(event) {
+    setNewCommentText(event.target.value);
   }
 
   return (
@@ -58,6 +61,8 @@ export function Post({ author, content, publishedAt }) {
         <textarea
           name="comment"
           placeholder="Write your comment"
+          value={newCommentText}
+          onChange={handleNewCommentChange}
         />
 
         <footer>
